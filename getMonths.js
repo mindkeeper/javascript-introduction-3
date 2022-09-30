@@ -21,10 +21,10 @@ const getMonths = (callback) => {
   }, 400);
 };
 
-const showMonts = (state, data) => {
-  if (data.length != 0)
-    return console.log(data.map((e, i) => (e = `${i + 1}: ${e}`)));
-  else return console.log(state);
+const showMonths = (error, data) => {
+  // nama variabel salah jangan lupa dicek.
+  if (!error) return console.log(data.map((e, i) => `${i + 1}: ${e}`));
+  return console.log(error.message); // gausah pake else, ini juga salah harusnya errpr.message
 };
 
-getMonths(showMonts);
+getMonths(showMonths);

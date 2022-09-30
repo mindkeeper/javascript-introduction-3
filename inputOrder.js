@@ -19,7 +19,7 @@ const loginAPI = (username, password) => {
         ) {
           return success(user);
         } else {
-          return failed(new Error("Invalid Login Credentials"));
+          return failed(new Error("Invalid Login Credentials")); // gausah pake else karena udah ada pengecekan untuk success
         }
       }
     }, 1000);
@@ -40,25 +40,23 @@ const createOrder = (order) => {
 };
 
 const newOrder = async (username, password, order, loginCb, orderCb) => {
-  if (!username && typeof username !== "string")
-    return "Input Username Invalid";
-  if (!password && typeof password !== "string")
-    return "Input Password Invalid";
-  if (!order || typeof order !== "string") return "Input order Invalid";
-  if (typeof loginCb !== "function" || typeof orderCb !== "function")
-    return "Invalid callback param";
-
   try {
+    if (!username && typeof username !== "string")
+      throw new Error("Input Username Invalid");
+    if (!password && typeof password !== "string")
+      throw new Error("Input Password Invalid");
+    if (!order || typeof order !== "string")
+      throw new Error("Input order Invalid");
+    if (typeof loginCb !== "function" || typeof orderCb !== "function")
+      throw new Error("Invalid callback param");
     const login = await loginCb(username, password);
-    await orderCb(order);
-    return `Hello ${login.username} Your ${order} Has Been Submitted`;
+    const ordered = await orderCb(order); // gunakan output dari callback const ordered = orderCb(order)
+    return `Hello ${login.username} Your ${ordered} Has Been Submitted`; //${order} diganti ke ${ordered}
   } catch (error) {
     return error.message;
-  } finally {
-    console.log("Loading Complete");
   }
 };
 
 const doOrder = async () =>
-  console.log(await newOrder("abcd", "12345", "nangka", loginAPI, createOrder));
+  console.log(await newOrder("abcd", "12345", "pisang", loginAPI, createOrder));
 doOrder();

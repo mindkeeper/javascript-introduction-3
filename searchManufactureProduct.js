@@ -1,7 +1,8 @@
 const searchManufacture = (name) => {
-  if (!name || typeof name !== "string") return "Input Invalid";
-  return new Promise((succes, failed) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
+      if (!name || typeof name !== "string")
+        return reject(new Error("Input Invalid"));
       const manufactureList = [
         {
           name: "Lamborghini",
@@ -26,8 +27,8 @@ const searchManufacture = (name) => {
       const manufacture = manufactureList.find(
         (item) => item.name.toLocaleLowerCase() === name.toLocaleLowerCase()
       );
-      if (manufacture) return succes(manufacture.products);
-      return failed(new Error("Manufacture Not Found!"));
+      if (manufacture) return resolve(manufacture.products);
+      return reject(new Error("Manufacture Not Found!"));
     }, 1000);
   });
 };
